@@ -1,74 +1,74 @@
-function! comentarista#SLCOtoggle() "{{{
+function! comentarista#single_toggle() "{{{
     normal ma
-    if getline(".") =~ '^\s*'.g:slco " Remove the comment tag it contains
-        silent exe ":.s;".escape(g:slco, "[]")." *;;"
+    if getline(".") =~ '^\s*'.b:comentarista_single " Remove the comment tag it contains
+        silent execute ":.s;".escape(b:comentarista_single, "[]")." *;;"
         normal `a
-        exe "silent normal ".eval(strlen(g:slco)+1)."h"
+        execute "silent normal ".eval(strlen(b:comentarista_single)+1)."h"
     else " Comment line
-        exe "normal I".g:slco." "
+        execute "normal I".b:comentarista_single." "
         normal `a
-        exe "normal ".eval(strlen(g:slco)+1)."l"
+        execute "normal ".eval(strlen(b:comentarista_single)+1)."l"
     endif
 
-    if exists("g:slcoE")
-        if getline(".") =~ g:slcoE.'\s*$'  " Remove the end comment tag it contains
-            silent exe ":.s; *".escape(g:slcoE, "[]").";;"
+    if exists("b:comentarista_single_closing")
+        if getline(".") =~ b:comentarista_single_closing.'\s*$'  " Remove the end comment tag it contains
+            silent execute ":.s; *".escape(b:comentarista_single_closing, "[]").";;"
             normal `a
             " normal 3h
-            exe "silent normal ".eval(strlen(g:slcoE)+1)."h"
+            execute "silent normal ".eval(strlen(b:comentarista_single_closing)+1)."h"
         else " Comment line (end)
-            exe "normal ^A ".g:slcoE." "
+            execute "normal ^A ".b:comentarista_single_closing." "
             normal `a
         endif
     endif
     nohlsearch
 endfunction "}}}
 
-function! comentarista#BLKCOtoggle(isVisual) "{{{
+function! comentarista#block_toggle(isVisual) "{{{
     "" Define a few variables
-    let curl = line(".")
-    let curc = col(".")
-    let startpat = escape(g:blkcoS, "*[]\{}")
-    let endpat = escape(g:blkcoE, "*[]\{}").'\s*$'
+    let l:curl = line(".")
+    let l:curc = col(".")
+    let l:startpat = escape(b:comentarista_block_start, "*[]\{}")
+    let l:endpat = escape(b:comentarista_block_end, "*[]\{}").'\s*$'
 
     " Search entire file 'upwards' for either a S or an E. if E or no S, then do comment
-    if match(getline("."), '^\s*'.startpat) > -1
-        let found = curl
+    if match(getline("."), '^\s*'.l:startpat) > -1
+        let l:found = l:curl
     else
-        if match(getline("."), endpat) > -1
-            call cursor(curl-1, 0)
+        if match(getline("."), l:endpat) > -1
+            call cursor(l:curl-1, 0)
         endif
-        let found = search(startpat."\\|".endpat, "bW")
+        let l:found = search(l:startpat."\\|".l:endpat, "bW")
     endif
     " echo "found #".found.": ".getline(found)
 
-    if found > 0 && match(getline(found), endpat) == -1 " Delete existing comments
-        if a:isVisual == 0 && searchpair(startpat, '', endpat, 'W') > 0
+    if l:found > 0 && match(getline(l:found), l:endpat) == -1 " Delete existing comments
+        if a:isVisual == 0 && searchpair(l:startpat, '', l:endpat, 'W') > 0
             normal dd
-            call cursor(found, 0)
+            call cursor(l:found, 0)
             normal dd
         endif
     else " Create new comment block
         if a:isVisual > 0
             call cursor(line("'<"), 0)
-            let mark=">"
+            let l:mark=">"
         else
-            call cursor(curl, curc)
-            let mark="a"
+            call cursor(l:curl, l:curc)
+            let l:mark="a"
         endif
 
-        let marked=line("'".mark)
-        if marked > 0
-            if marked > curl
-                exe "normal O".g:blkcoS."'".mark."o".g:blkcoE.""
+        let l:marked=line("'".l:mark)
+        if l:marked > 0
+            if l:marked > l:curl
+                execute "normal O".b:comentarista_block_start."'".l:mark."o".b:comentarista_block_end.""
             else
-                exe "normal o".g:blkcoE."'".mark."O".g:blkcoS.""
+                execute "normal o".b:comentarista_block_end."'".l:mark."O".b:comentarista_block_start.""
             endif
         else
-            exe "normal o".g:blkcoE."kO".g:blkcoS.""
+            execute "normal o".b:comentarista_block_end."kO".b:comentarista_block_start.""
         endif
     endif
-    call cursor(curl, curc)
+    call cursor(l:curl, l:curc)
 endfunction "}}}
 
 
