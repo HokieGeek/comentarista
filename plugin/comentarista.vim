@@ -44,4 +44,4 @@ augroup comment_mappings
         \ execute "nnoremap <silent> fixme oFIXME: <esc>".g:comentarista_toggle_single_line."==A"
 augroup END
 
-" vim: set foldmethod=marker number relativenumber formatoptions-=tc:
+" vim: set foldmethod=marker formatoptions-=tc:

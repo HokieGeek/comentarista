@@ -72,4 +72,4 @@ function! comentarista#block_toggle(isVisual) "{{{
 endfunction "}}}
 
 
-" vim: set foldmethod=marker number relativenumber formatoptions-=tc:
+" vim: set foldmethod=marker formatoptions-=tc:
