@@ -1,3 +1,8 @@
+if exists("g:autoloaded_comentarista") || v:version < 700
+    finish
+endif
+let g:autoloaded_comentarista = 1
+
 function! comentarista#single_toggle() "{{{
     normal ma
     if getline(".") =~ '^\s*'.b:comentarista_single " Remove the comment tag it contains

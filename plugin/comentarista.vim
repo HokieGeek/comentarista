@@ -1,3 +1,8 @@
+if exists("g:loaded_comentarista") || v:version < 700
+    finish
+endif
+let g:loaded_comentarista = 1
+
 let g:comentarista_toggle_single_line = "<Tab>"
 let g:comentarista_toggle_block = "<S-Tab>"
 
