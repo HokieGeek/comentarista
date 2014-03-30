@@ -4,29 +4,42 @@ endif
 let g:autoloaded_comentarista = 1
 
 function! comentarista#single_toggle() "{{{
-    normal ma
-    if getline(".") =~ '^\s*'.b:comentarista_single " Remove the comment tag it contains
-        silent execute ":.s;".escape(b:comentarista_single, "[]")." *;;"
-        normal `a
-        execute "silent normal ".eval(strlen(b:comentarista_single)+1)."h"
-    else " Comment line
-        execute "normal I".b:comentarista_single." "
-        normal `a
-        execute "normal ".eval(strlen(b:comentarista_single)+1)."l"
+    if !exists("b:comentarista_single")
+        return
     endif
 
+    let l:symbol_len = strlen(b:comentarista_single)
+    let l:col_pos = col(".")
+    let l:line = getline(".")
+
+    " Beginning tag
+    if l:line =~ '^\s*'.b:comentarista_single " Remove the comment tag it contains
+        " let l:line_modified = substitute(l:line, "^\\(\\s*\\)".b:comentarista_single." \\(.\\)", "\\1\\2", "")
+        let l:pat = "^\\(\\s*\\)".b:comentarista_single." \\(.\\)"
+        let l:sub = "\\1\\2"
+        let l:cursor_offset = l:col_pos-l:symbol_len-1
+    else
+        let l:pat = "^\\(\\s*\\)\\(.\\)"
+        let l:sub = "\\1".b:comentarista_single." \\2"
+        let l:cursor_offset = l:col_pos+l:symbol_len+1
+    endif
+    let l:line_modified = substitute(l:line, l:pat, l:sub, "")
+
+    " Ending tag
     if exists("b:comentarista_single_closing")
         if getline(".") =~ b:comentarista_single_closing.'\s*$'  " Remove the end comment tag it contains
-            silent execute ":.s; *".escape(b:comentarista_single_closing, "[]").";;"
-            normal `a
-            " normal 3h
-            execute "silent normal ".eval(strlen(b:comentarista_single_closing)+1)."h"
-        else " Comment line (end)
-            execute "normal ^A ".b:comentarista_single_closing." "
-            normal `a
+            let l:pat = "\\(.\\) ".b:comentarista_single_closing."\\(\\s*\\)$"
+            let l:sub = "\\1\\2"
+        else
+            let l:pat = "\\(.\\)\\(\\s*\\)$"
+            let l:sub = "\\1 ".b:comentarista_single_closing."\\2"
         endif
+        let l:line_modified = substitute(l:line_modified, l:pat, l:sub, "")
     endif
-    nohlsearch
+
+    " Write the line and move the cursor
+    call setline(".", l:line_modified)
+    call cursor(".", l:cursor_offset)
 endfunction "}}}
 
 function! comentarista#block_toggle(isVisual) "{{{
