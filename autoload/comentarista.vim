@@ -13,7 +13,7 @@ function! comentarista#single_toggle() "{{{
     let l:line = getline(".")
 
     " Beginning tag
-    if l:line =~ '^\s*'.b:comentarista_single " Remove the comment tag it contains
+    if l:line =~? '^\s*'.b:comentarista_single " Remove the comment tag it contains
         " let l:line_modified = substitute(l:line, "^\\(\\s*\\)".b:comentarista_single." \\(.\\)", "\\1\\2", "")
         let l:pat = "^\\(\\s*\\)".b:comentarista_single." \\(.\\)"
         let l:sub = "\\1\\2"
@@ -27,7 +27,7 @@ function! comentarista#single_toggle() "{{{
 
     " Ending tag
     if exists("b:comentarista_single_closing")
-        if getline(".") =~ b:comentarista_single_closing.'\s*$'  " Remove the end comment tag it contains
+        if getline(".") =~? b:comentarista_single_closing.'\s*$'  " Remove the end comment tag it contains
             let l:pat = "\\(.\\) ".b:comentarista_single_closing."\\(\\s*\\)$"
             let l:sub = "\\1\\2"
         else
