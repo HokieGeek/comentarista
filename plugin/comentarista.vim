@@ -17,7 +17,7 @@ augroup comment_symbols
         \ let b:comentarista_block_start="/*" |
         \ let b:comentarista_block_end="*/"
     " Shell/Scripts
-    autocmd FileType sh,ksh,csh,tcsh,zsh,bash,dash,pl,python,make,gdb
+    autocmd FileType sh,ksh,csh,tcsh,zsh,bash,dash,pl,python,make,gdb,dockerfile
         \ let b:comentarista_single="#"
     " XML
     autocmd FileType xml,html
