@@ -12,12 +12,12 @@ augroup comment_symbols
     autocmd FileType sql,haskell let b:comentarista_single="--"    " SQL and Haskell
     autocmd FileType ahk let b:comentarista_single=";"        " AutoHotkey
     " Java/C/C++
-    autocmd FileType java,javascript,c,c++,cpp,h,h++,hpp,go
+    autocmd FileType java,javascript,c,c++,cpp,h,h++,hpp,go,scala
         \ let b:comentarista_single="//" |
         \ let b:comentarista_block_start="/*" |
         \ let b:comentarista_block_end="*/"
     " Shell/Scripts
-    autocmd FileType sh,ksh,csh,tcsh,zsh,bash,dash,pl,python,make,gdb,dockerfile,awk
+    autocmd FileType sh,ksh,csh,tcsh,zsh,bash,dash,pl,python,make,gdb,dockerfile,awk,sed
         \ let b:comentarista_single="#"
     " XML
     autocmd FileType xml,html
