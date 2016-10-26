@@ -12,7 +12,7 @@ augroup comment_symbols
     autocmd FileType sql,haskell let b:comentarista_single="--"    " SQL and Haskell
     autocmd FileType ahk let b:comentarista_single=";"        " AutoHotkey
     " Java/C/C++
-    autocmd FileType java,javascript,c,c++,cpp,h,h++,hpp,go,scala
+    autocmd FileType java,javascript,typescript,c,c++,cpp,h,h++,hpp,go,scala
         \ let b:comentarista_single="//" |
         \ let b:comentarista_block_start="/*" |
         \ let b:comentarista_block_end="*/"
@@ -20,11 +20,17 @@ augroup comment_symbols
     autocmd FileType sh,ksh,csh,tcsh,zsh,bash,dash,pl,python,make,gdb,dockerfile,awk,sed,spec
         \ let b:comentarista_single="#"
     " XML
-    autocmd FileType xml,html
+    autocmd FileType xml
         \ let b:comentarista_single="<![CDATA[-----" |
         \ let b:comentarista_single_closing="-----]]>" |
         \ let b:comentarista_block_start="<![CDATA[-------------------" |
         \ let b:comentarista_block_end="-------------------]]>"
+    " HTML
+    autocmd FileType html
+        \ let b:comentarista_single="<!--" |
+        \ let b:comentarista_single_closing="-->" |
+        \ let b:comentarista_block_start="<!-------------------" |
+        \ let b:comentarista_block_end="------------------->"
     " LaTeX
     autocmd FileType tex
         \ let b:comentarista_single="%" |
@@ -38,7 +44,7 @@ augroup comment_mappings
         \ execute "vnoremap <silent> ".g:comentarista_toggle_block." :call comentarista#block_toggle(1)<cr>" |
         \ execute "nnoremap <silent> ".g:comentarista_toggle_block." :call comentarista#block_toggle(0)<cr>"
 
-    autocmd FileType java,javascript,c,c++,cpp,h,h++,hpp,sql,xml,sh,ksh,csh,tcsh,zsh,bash,dash,pl,python,vim,vimrc,ahk,tex,make,gdb,haskell,go
+    autocmd FileType java,javascript,typescript,c,c++,cpp,h,h++,hpp,sql,xml,sh,ksh,csh,tcsh,zsh,bash,dash,pl,python,vim,vimrc,ahk,tex,make,gdb,haskell,go,awk,sed,spec,dockerfile
         \ execute "nnoremap <silent> ".g:comentarista_toggle_single_line." :call comentarista#single_toggle()<cr>"
     autocmd FileType sh,ksh,csh,tcsh,zsh,bash,pl,python,sql,vim,vimrc,ahk,tex,make,gdb,go
         \ execute "nnoremap <silent> ".g:comentarista_toggle_block." :'k,.call comentarista#single_toggle()<cr>"
