@@ -3,8 +3,8 @@ if exists("g:loaded_comentarista") || v:version < 700
 endif
 let g:loaded_comentarista = 1
 
-let g:comentarista_toggle_single_line = "<Tab>"
-let g:comentarista_toggle_block = "<S-Tab>"
+let g:comentarista_toggle_single_line = "g<Tab>"
+let g:comentarista_toggle_block = "g<S-Tab>"
 
 augroup comment_symbols
     autocmd!
